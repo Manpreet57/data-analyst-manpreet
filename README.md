@@ -6,12 +6,12 @@
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
-# Objective
+## Objective
 
 The objective of the project is to transfer data from the City of Vancouver to the AWS cloud platform and develop a complete data analytics pipeline. The purpose is to optimize data processing, analysis, and visualization across multiple city departments, while ensuring scalability, security, and efficiency in managing the data.
 ![image](https://github.com/user-attachments/assets/cb8c1496-5a52-40c2-b3fd-4a53ea6e7e74)
 
-# Data Analytical Question Formulation
+Data Analytical Question Formulation
 1.	Descriptive Metrics
 What is the overall voting distribution in 2023 compared to 2024? (e.g., number of "In Favour" vs. "Against" votes).
 Metric: Average Opposition Vote Rate
@@ -26,7 +26,7 @@ Metric: Recommended Actions to Reduce Opposition Vote Rate
 What strategies can be implemented to reduce opposition vote rates in future council meetings?
 
 
-## Data Discovery
+## DataSet
 
 Dataset Limk: https://opendata.vancouver.ca/explore/embed/dataset/council-voting-records/table/?disjunctive.meeting_type&disjunctive.vote_number&disjunctive.council_member&disjunctive.vote
 
@@ -44,62 +44,71 @@ The datasets contain council voting records for the years 2023 and 2024. These r
 
 
 ## Methodology 
-1. Data Storage Desgin
+### 1: Data Storage Desgin
    
-Tool: S3 bucket structure
+- Tool: S3 bucket structure
 
-Subfolders: Inside the bucket we have 2024 and 2023 folders and we have landing named folder for each year. Inside that we have our dataset name Council Voting Records. That we will be using further.
+- Subfolders: Inside the bucket we have 2024 and 2023 folders and we have landing named folder for each year. Inside that we have our dataset name Council Voting Records. That we will be using further.
 
 ![image](https://github.com/user-attachments/assets/1668a4df-3f7b-4432-8854-eb93d70b5647)
 
-2. Dataset Prepartion
+### 2: Dataset Prepartion
 
 Tool: AWS DataBrew
 Key Tasks:
 
-Removing the rows with NA values.
+- Removing the rows with NA values.
 
-Dropping Less relevent columns.
+- Dropping Less relevent columns.
 
-Renaming the metadata for better understanding.
+- Renaming the metadata for better understanding.
 
-Conversion of numerical data types to integers.
+- Conversion of numerical data types to integers.
 
-Two DataBrew jobs were created: CouncilVotingRecords-Job-2023 and CouncilVotingRecords-Job-2024.
+- Two DataBrew jobs were created: CouncilVotingRecords-Job-2023 and CouncilVotingRecords-Job-2024.
 
 ![image](https://github.com/user-attachments/assets/03dfb361-5372-4437-b36f-95abebe65731)
 
 
 
-3: Data Ingestion, Storage, Pipeline Design, Cleaning, Pipeline Implementation.
+### 3: Data Ingestion, Storage, Pipeline Design, Cleaning, Pipeline Implementation.
+- Tool: AWS Glue ETL
 
-Tool: AWS Glue ETL
-
-The dataset in Raw data which is cleaned with no Na and missing values. The next task is to covert the operational dataset into analytical dataset. 
+- The dataset in Raw data which is cleaned with no Na and missing values. The next task is to covert the operational dataset into analytical dataset. 
 AWS glue ETL will be used for this task and then we will making a new folder named 'curated' and then saving our analytical dataset into that.
 
-We will finding the opposition vote rate for 2023 and 2024.
-The Formula is:
+- We will finding the opposition vote rate for 2023 and 2024.
 
-**Opposition Vote Rate=(No of In Opposition Vote Rate/ Total Number of Votes )**
+- The Formula is:
 
-These are the following steps used to construct the ETL pipline
+ **Opposition Vote Rate=(No of In Opposition Vote Rate/ Total Number of Votes )**
 
-Imported datasets for 2023 and 2024 from S3 raw folder.
+- These are the following steps used to construct the ETL pipline
 
-Changed schema, filtered out irrelevant rows, and dropped null values.
+- Imported datasets for 2023 and 2024 from S3 raw folder.
 
-Used join, union and aggregate functions to combine datasets and focus on opposition rate classification.
+- Changed schema, filtered out irrelevant rows, and dropped null values.
 
-AWS Glue’s ETL process cleaned and transformed the data:
+- Used join, union and aggregate functions to combine datasets and focus on opposition rate classification.
 
-Targeted crucial dataset variables such as Vote Status.
+- AWS Glue’s ETL process cleaned and transformed the data:
 
-Combined data for multiple years and removed irrelevant or incomplete data.
+- Targeted crucial dataset variables such as Vote Status.
 
-Final filtered data stored in the curated S3 folder in CSV format.
+- Combined data for multiple years and removed irrelevant or incomplete data.
 
-The ETL Pipeline was implemented using AWS Glue, storing the cleaned datasets in the curated folder of the S3 bucket.
+- Final filtered data stored in the curated S3 folder in CSV format.
+
+- The ETL Pipeline was implemented using AWS Glue, storing the cleaned datasets in the curated folder of the S3 bucket.
 
 ![image](https://github.com/user-attachments/assets/69015e13-d98b-4c43-a916-430c80b25e1f)
+
+### 4: Data Structuring 
+
+- The setup involves importing raw data from an S3 bucket in Amazon Web Services (AWS).
+- The specific folder, named 'raw,' contains unprocessed data that is used for further structuring.
+- SQL queries are then applied using Athena, an interactive query service that allows users to analyze data in S3 using standard SQL. This approach makes the data accessible for faster queries and enables easier analysis, reporting, and insights extraction, crucial for data-driven decision-making.
+
+
+
 
